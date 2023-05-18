@@ -1,23 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement, addTodo, deleteLastTodo } from "./toolkitSlice";
+import { useState } from "react";
 
 function App() {
+  const [todo, AddTodo] = useState('');
+  const count = useSelector((state) => state.toolkit.count);
+  const todos = useSelector((state) => state.toolkit.todos);
+  const dispatch = useDispatch();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="container">
+      <h11>{count}</h11>
+      <button onClick={() => dispatch(increment())}>+1</button>
+      <button onClick={() => dispatch(decrement())}>-1</button>
+      <button onClick={() => dispatch(deleteLastTodo())}>Remove toDo</button>
+      <input type="text" value={todo} onChange={(e)=> AddTodo(e.target.value)}/>
+      <button onClick={() => dispatch(addTodo(todo))}>Add toDo</button>
+      <ul>
+        {todos.map((todo) => (
+          <li key={todo}>{todo}</li>
+        ))}
+      </ul>
     </div>
   );
 }
